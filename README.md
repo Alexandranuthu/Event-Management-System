@@ -23,8 +23,8 @@ users can sync events with their google calendar or other calendar reminders
 organizers can have access to a dashboard where they can manage their ticket sales and see stats e.g number of attendees
 
 ### why this is cool? 
-for organizers to manage events way easier
-for attendee to find it super convenient to access events, buy tickets
+- for organizers to manage events way easier
+- for attendee to find it super convenient to access events, buy tickets
 
 ## Getting Started
 
@@ -66,7 +66,7 @@ for attendee to find it super convenient to access events, buy tickets
 Feel free to open issues or submit pull requests if you have suggestions or improvements. Contributions are welcome!
 
 ## Contact
-For questions or further information, you can contact me at 
+For questions or further information, you can contact me at  
 <a href="alexandranuthuu@gmail.com">alexandranuthuu@gmail.com</a>
 
 
