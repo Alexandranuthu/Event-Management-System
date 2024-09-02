@@ -59,8 +59,8 @@ organizers can have access to a dashboard where they can manage their ticket sal
     ```
    
 ## USAGE
-**Access the API**: Navigate to http://localhost:5000 in your browser to see the API running.
-**Check Routes**: Test API routes using tools like Postman.
+- **Access the API**: Navigate to http://localhost:5000 in your browser to see the API running.
+- **Check Routes**: Test API routes using tools like Postman.
 
 ## Contributing
 Feel free to open issues or submit pull requests if you have suggestions or improvements. Contributions are welcome!
