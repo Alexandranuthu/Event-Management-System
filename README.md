@@ -67,6 +67,6 @@ Feel free to open issues or submit pull requests if you have suggestions or impr
 
 ## Contact
 For questions or further information, you can contact me at  
-<a href="alexandranuthuu@gmail.com">alexandranuthuu@gmail.com</a>
+Email: <a href="alexandranuthuu@gmail.com">alexandranuthuu@gmail.com</a>
 
 
