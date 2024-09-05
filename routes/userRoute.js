@@ -5,12 +5,9 @@ const { registerUser, loginUser } = require('../controllers/userController');
 
 
 // public routes for registering a user and logging in
-try {
     router.post('/register', registerUser);
     router.post('/login', loginUser);
-} catch (err) {
-    console.error(err);
-};
+
 
 
 

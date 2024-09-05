@@ -1,5 +1,6 @@
 // USER MODEL
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const userSchema = mongoose.Schema({
     userName: {
@@ -30,7 +31,7 @@ const userSchema = mongoose.Schema({
     },
     profilePicture: {
         type: String,
-        default: '/public/images/userprofile.jpg'
+        default: '/images/userprofile.jpg'
     },
     bio: {
         type: String,
@@ -44,10 +45,8 @@ const userSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, //creating a relationship with the event model
         ref: 'Event'
     }],
+}, {
     timestamps: true //this automatically adds createdAt and updatedAt fields
-   
-
-
 });
 
 // pre saves the middleware to hash 
