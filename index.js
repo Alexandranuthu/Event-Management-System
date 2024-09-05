@@ -1,18 +1,26 @@
 const express = require('express');
-const connectDB = require('./config/db');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const eventRoutes = require('./routes/eventRoutes');
+
+dotenv.config();
 
 const app = express();
-
-connectDB();
-
 app.use(express.json());
 
-// sample route to test
-app.get('/', (req, res) => {
-    res.send('API is running ...')
-});
+// Connect to MongoDB
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log('Connected to MongoDB Atlas'))
+  .catch((err) => console.error('Error connecting to MongoDB Atlas:', err));
 
+// Use event routes
+app.use('/events', eventRoutes);
+
+// Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server running on ${PORT}`);
-})
+  console.log(`Server running on port ${PORT}`);
+});
