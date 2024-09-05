@@ -7,7 +7,7 @@ const userSchema = mongoose.Schema({
         required: [true, 'Please provide your name'],
         unique: true,
         trim: true,
-        maxlength: [50, 'Name cannot be more than 30 characters']
+        maxLength: [50, 'Name cannot be more than 30 characters']
     },
     email: {
         type: String,
@@ -34,7 +34,7 @@ const userSchema = mongoose.Schema({
     },
     bio: {
         type: String,
-        maxlength: [200, 'Bio cannot be more than 200 characters']
+        maxLength: [200, 'Bio cannot be more than 200 characters']
     },
     registeredEvents: [{
         type: mongoose.Schema.Types.ObjectId, //creating a relationship with the event model that the user has signed up or
@@ -53,7 +53,7 @@ const userSchema = mongoose.Schema({
 // pre saves the middleware to hash 
 userSchema.pre('save', async function (next) {
     try {
-        const salt = await bcryp.genSalt(12);
+        const salt = await bcrypt.genSalt(12);
         if (this.isModified('password')) {
             const hashedPwd = await bcrypt.hash(this.password, salt);
             this.password = hashedPwd;
