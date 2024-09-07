@@ -20,7 +20,7 @@ const eventSchema = new mongoose.Schema({
   },
   images: [String],
   themes: [String],
-  tickets: [
+  tickets: [///////////////////////////////////////////////////////////////
     {
       type: {
         type: String,
@@ -36,7 +36,7 @@ const eventSchema = new mongoose.Schema({
       },
     },
   ],
-  organizer: {
+  organizer: {///////////////////////////////////////////////////////////////
     type: String,
     required: true,
   },
