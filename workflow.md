@@ -34,12 +34,5 @@
 ### 3. API Testing
 - Use tools like **Postman** or **Insomnia** to test your API endpoints.
 
-[Download events.pdf](https://github.com/user-attachments/files/16923283/events.pdf)
+[Download thw erd diagram pdf formart](https://github.com/user-attachments/files/16923283/events.pdf)
 
----
-
-### Embedded PDF:
-
-<iframe src="https://github.com/user-attachments/files/16923283/events.pdf" width="100%" height="600px">
-    <p>Your browser does not support iframes. You can download the PDF <a href="https://github.com/user-attachments/files/16923283/events.pdf">here</a>.</p>
-</iframe>
