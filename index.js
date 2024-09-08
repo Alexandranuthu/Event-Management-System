@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const userRoutes = require('./routes/userRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 
 dotenv.config();
@@ -16,8 +17,9 @@ mongoose.connect(process.env.MONGODB_URI, {
   .then(() => console.log('Connected to MongoDB Atlas'))
   .catch((err) => console.error('Error connecting to MongoDB Atlas:', err));
 
-// Use event routes
+// Use routes
 app.use('/events', eventRoutes);
+app.use('/users', userRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 5000;
