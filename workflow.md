@@ -34,5 +34,5 @@
 ### 3. API Testing
 - Use tools like **Postman** or **Insomnia** to test your API endpoints.
 
-[Download thw erd diagram pdf formart](https://github.com/user-attachments/files/16923283/events.pdf)
+[Download the ERD diagram pdf formart](https://github.com/user-attachments/files/16923283/events.pdf)
 
