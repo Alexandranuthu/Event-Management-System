@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const userRoutes = require('./routes/userRoutes');
 const eventRoutes = require('./routes/eventRoutes');
-
+const ticketRoutes = require('./routes/ticketsRoutes');
 const eventScheduleRoutes = require('./routes/eventScheduleRoutes');
 const bookingsRoutes = require('./routes/bookingsRoutes');
 
@@ -23,7 +23,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 // Use routes
 app.use('/events', eventRoutes);
 app.use('/users', userRoutes);
-
+app.use('/tickets', ticketRoutes); 
 app.use('/schedules', eventScheduleRoutes); 
 app.use('/bookings', bookingsRoutes); 
 
