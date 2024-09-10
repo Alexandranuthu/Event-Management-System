@@ -5,7 +5,7 @@
 3. **Event Management**
 4. **Ticketing System**
 5. **Payment Gateway Integration**
-
+- Organizers can track RSVPs and attendance for each event.
 ## Entities
 
 - **Users**: Organizers, attendees, admins.
@@ -17,7 +17,9 @@
 
 1. `POST /api/register` - Register a new user.
 2. `POST /api/login` - Authenticate a user.
+- logout, middlewares jwts, fogot password.
 3. `GET /api/events` - Get a list of all events.
+ - Some Categories: Music Events,Sports Events,Conferences and Seminars,Arts & Culture,Community & Charity,Technology & Innovation,Family & Kids,Health & Fitness,Educational Events,Corporate Events
 4. `POST /api/events` - Create a new event (restricted to organizers).
 5. `GET /api/tickets/:eventId` - Get tickets for an event.
 6. `POST /api/payments` - Handle payment for a ticket.

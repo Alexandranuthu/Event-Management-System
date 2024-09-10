@@ -27,6 +27,8 @@ const userSchema = mongoose.Schema({
     role: {
         type: String,
         enum: ['attendee', 'organizer', 'admin'],
+        // Organizers can track RSVPs and attendance for each event.
+        // Attendees can check in at events using QR codes.
         default: 'attendee'
     },
     profilePicture: {

@@ -19,6 +19,7 @@ const eventSchema = new mongoose.Schema({
   organizerProfile: { type: String, required: true },
   attendees: { type: [String] },
   categories: { type: [String] },
+  //Music Events,Sports Events,Conferences and Seminars,Arts & Culture,Community & Charity,Technology & Innovation,Family & Kids,Health & Fitness,Educational Events,Corporate Events
   timestamps: { type: Date, default: Date.now },
   calendarSync: { type: Boolean, default: false },
   status: { type: String, enum: ['scheduled', 'ongoing', 'completed'], default: 'scheduled' }
