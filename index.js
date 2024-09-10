@@ -7,7 +7,7 @@ const app = express();
 // loading the environmental variables
 dotenv.config();
 
-const userRoutes = require('./routes/userRoute');
+
 const authRoutes = require('./routes/authRoute');
 
 
@@ -17,7 +17,6 @@ connectDB();
 
 
 app.use(express.json()); //middleware for parsing JSON data
-app.use('/api/users', userRoutes); //using userRoutes
 app.use('/api/auth', authRoutes); //using authRoutes
 
 // sample route to test
