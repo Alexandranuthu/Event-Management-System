@@ -5,6 +5,9 @@ const { authSchema } = require('../auth/auth_schema.js');
 const createHttpError = require('http-errors');
 
 module.exports = {
+        // @desc registering a new user
+        // @route POST /api/auth/register
+        // @access Public
     register: async (req, res) => {
         try {
             const { userName, email, password } = req.body;
@@ -49,5 +52,8 @@ module.exports = {
         }
     },
 
-    
+        // @desc Authenticate the user to login
+        // @route Get /api/auth/login
+        // @access public
+
 }
