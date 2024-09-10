@@ -103,4 +103,23 @@ module.exports = {
              res.status(error.status || 500).json({ success: false, error: error.message || 'Internal Server Error' });
         }
      }),
+
+     // @desc Authenticate the user to login
+        // @route Get /api/auth/login
+        // @access public
+
+    logout: async (req, res) => {
+        try {
+            const token = req.headers.authorization?.split(' ')[1]; //extracting token from bearer token
+
+            if (!token) {
+                return res.status(400).json({ message: 'No token has been provided' });
+            }
+
+            res.json({ message: 'Logout is successful' });
+        } catch (error) {
+            console.error('Error during logout:', error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+     }
 }
