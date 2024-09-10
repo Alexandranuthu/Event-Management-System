@@ -1,8 +1,11 @@
 // authentication Controller
 const User = require ('../models/userModel.js')
 const { signAccessToken, verifyAccessToken, signRefreshToken, verifyRefreshToken } = require('../helpers/jwtHelper');
-const { authSchema } = require('../auth/auth_schema.js');
+const { authSchema, loginSchema } = require('../auth/auth_schema.js');
 const createHttpError = require('http-errors');
+const jwtHelper = require('../helpers/jwtHelper.js');
+const asyncHandler = require('express-async-handler');
+const bcrypt = require('bcryptjs');
 
 module.exports = {
         // @desc registering a new user
@@ -40,7 +43,7 @@ module.exports = {
             res.status(201).json({
                 accessToken,
                 refreshToken,
-                message: 'User registration completed successfully',
+                message: "Thank you for registering with us. Your account has been successfully created.",
                 user: savedUser
             });
         } catch (error) {
@@ -56,4 +59,48 @@ module.exports = {
         // @route Get /api/auth/login
         // @access public
 
+     login : asyncHandler(async (req, res) => {
+        const { email, password } = req.body //just need the email and password to login a user
+    
+         try {
+            await loginSchema.validateAsync({ email, password });
+
+             const user = await User.findOne({ email }).select('+password');
+             if (!user) {
+                 throw createHttpError(401, 'Invalid email/password combination');
+             }
+
+             const validPassword = await bcrypt.compare(password, user.password);
+
+             if (!validPassword) {
+                 throw createHttpError(401, 'Invalid email/password combination');
+             }
+
+             //  if valid create and assign a token to the user
+             const accessToken = await signAccessToken(
+                 user.id,
+                user.userName,
+                 true
+             );
+
+             const refreshToken = await signRefreshToken(user.id);
+             res.status(200).json({
+                 user: {
+                     id: user.id,
+                     userName: user.userName
+                 },
+                 accessToken,
+                 refreshToken,
+                 message: 'You have successfully logged in',
+             });
+
+             console.log(`User ${user.userName} logged in successfully`);
+         } catch (error) {
+             if (error.isJoi === true) {
+                 return res.status(400).json({ success: false, error: error.message });
+             }
+             console.error('Login failed:', error.message);
+             res.status(error.status || 500).json({ success: false, error: error.message || 'Internal Server Error' });
+        }
+     }),
 }

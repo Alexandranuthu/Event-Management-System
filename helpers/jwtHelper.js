@@ -1,4 +1,4 @@
-// helpers/jwtHelper.js - is a module designed to manage JSON Web Tokens (JWTs) in your application for user authentication and authorization.
+// helpers/jwtHelper.js - is a module designed to manage JSON Web Tokens (JWT) in your application for user authentication and authorization.
 
 
 
