@@ -104,8 +104,8 @@ module.exports = {
         }
      }),
 
-     // @desc Authenticate the user to login
-        // @route Get /api/auth/login
+     // @desc Authenticate the user to logout
+        // @route Get /api/auth/logout
         // @access public
 
     logout: async (req, res) => {

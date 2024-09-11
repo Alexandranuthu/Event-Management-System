@@ -25,12 +25,15 @@ const verifyToken = (token, secret) => {
         JWT.verify(token, secret, (err, payload) => {
             if (err) {
                 console.error('Error verifying token:', err.message);
-                return reject(createError.Unauthorized());
+                if (err.name === 'TokenExpiredError') {
+                    return reject(createError.Unauthorized('Token expired')); // Specific error for expired tokens
+                }
+                return reject(createError.Unauthorized('Invalid token')); // General error for token issues
             }
             resolve(payload);
         });
     });
-}
+};
 
 
 module.exports = {
@@ -52,16 +55,16 @@ module.exports = {
     //middleware function to verify the access token
     verifyAccessToken: (req, res, next) => {
         const authHeader = req.headers['authorization']; //get auth header
-        if (!authHeader) return next(createError.Unauthorized());
+        if (!authHeader) return next(createError.Unauthorized('Authorization header missing'));
 
         const [scheme, token] = authHeader.split(' '); // Splitting the Authorization header value by space to extract 'Bearer' and the token
-        if (scheme !== 'Bearer' || !token) return next(createError.Unauthorized());
+        if (scheme.toLowerCase() !== 'bearer' || !token) {
+            return next(createError.Unauthorized('Invalid authorization format'));
+        }
 
         verifyToken(token, process.env.ACCESS_TOKEN_SECRET)
             .then(payload => {
-                const userId = payload.user;
-                if (!userId) return next(createError.Unauthorized('Invalid token payload'));
-                req.user = { id: userId };
+                req.user = { id: payload.user };
                 next();
             })
             .catch(next);
@@ -69,7 +72,7 @@ module.exports = {
 
     //Generates a refresh token with general payload and options.
     signRefreshToken: async (userId) => {
-        const payload = {};
+        const payload = {user: userId};
         const options = {
             expiresIn: config.refreshTokenExpiration,
             issuer: 'event-management-system.com',
@@ -85,20 +88,22 @@ module.exports = {
         }
     },
     //Verifies the refresh token and extracts the user ID from the payload.
-    verifyRefreshToken: (refreshToken) => {
-        return verifyToken(refreshToken, process.env.REFRESH_TOKEN_SECRET)
-            .then(payload => payload.aud)
+    verifyRefreshToken: async (refreshToken) => {
+        return await verifyToken(refreshToken, process.env.REFRESH_TOKEN_SECRET)
+            .then(payload => payload.user)
             .catch(() => {
-                throw createError.Unauthorized();
+                throw createError.Unauthorized('Invalid or expired refresh token');
             });
     },
     //Middleware function to verify the access token and set the user information on the request object
     authenticateToken: (req, res, next) => {
         const authHeader = req.headers['authorization'];
-        if (!authHeader) return next(createError.Unauthorized());
+        if (!authHeader) return next(createError.Unauthorized('Authorization header missing'));
 
         const [scheme, token] = authHeader.split(' ');
-        if (scheme !== 'Bearer' || !token) return next(createError.Unauthorized());
+        if (scheme.toLowerCase() !== 'bearer' || !token) {
+            return next(createError.Unauthorized('Invalid authorization format'));
+        }
 
         verifyToken(token, process.env.ACCESS_TOKEN_SECRET)
             .then(payload => {

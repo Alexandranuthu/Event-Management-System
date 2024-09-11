@@ -2,5 +2,5 @@
 
 module.exports = {
     accessTokenExpiration: '1h',
-    refreshTokenExpiration: '1y',
+    refreshTokenExpiration: '30d',
 };
