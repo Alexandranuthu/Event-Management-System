@@ -3,7 +3,6 @@ const User = require ('../models/userModel.js')
 const { signAccessToken, verifyAccessToken, signRefreshToken, verifyRefreshToken } = require('../helpers/jwtHelper');
 const { authSchema, loginSchema } = require('../auth/auth_schema.js');
 const createHttpError = require('http-errors');
-const jwtHelper = require('../helpers/jwtHelper.js');
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcryptjs');
 
@@ -11,7 +10,7 @@ module.exports = {
         // @desc registering a new user
         // @route POST /api/auth/register
         // @access Public
-    register: async (req, res) => {
+    register: asyncHandler(async (req, res) => {
         try {
             const { userName, email, password } = req.body;
 
@@ -39,10 +38,22 @@ module.exports = {
 
             console.log('user has been created successfully', savedUser);
 
+            res.cookie('accessToken', accessToken, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: process.env.NODE_ENV === 'production' ? 'Lax' : 'Strict',
+                maxAge: 24 * 60 * 60 * 1000 // 1 day
+            });
+
+            res.cookie('refreshToken', refreshToken, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: process.env.NODE_ENV === 'production' ? 'Lax' : 'Strict',
+                maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+            });
+
             // Send success response with tokens
             res.status(201).json({
-                accessToken,
-                refreshToken,
                 message: "Thank you for registering with us. Your account has been successfully created.",
                 user: savedUser
             });
@@ -53,10 +64,10 @@ module.exports = {
             console.error('Registration not complete, there is an error', error);
             res.status(error.status || 500).json({ success: false, error: error.message ||'Internal Server Error' });
         }
-    },
+    }),
 
         // @desc Authenticate the user to login
-        // @route Get /api/auth/login
+        // @route POST /api/auth/login
         // @access public
 
      login : asyncHandler(async (req, res) => {
@@ -84,13 +95,26 @@ module.exports = {
              );
 
              const refreshToken = await signRefreshToken(user.id);
+
+             res.cookie('accessToken', accessToken, {
+                 httpOnly: true,
+                 secure: process.env.NODE_ENV === 'production',
+                 sameSite: process.env.NODE_ENV === 'production' ? 'Lax' : 'Strict',
+                 maxAge: 24 * 60 * 60 * 1000 // 1 day
+             })
+
+             res.cookie('refreshToken', refreshToken, {
+                 httpOnly: true,
+                 secure: process.env.NODE_ENV === 'production',
+                 sameSite: process.env.NODE_ENV === 'production' ? 'Lax' : 'Strict',
+                 maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+             })
+
              res.status(200).json({
                  user: {
                      id: user.id,
                      userName: user.userName
                  },
-                 accessToken,
-                 refreshToken,
                  message: 'You have successfully logged in',
              });
 
@@ -105,21 +129,18 @@ module.exports = {
      }),
 
      // @desc Authenticate the user to logout
-        // @route Get /api/auth/logout
+        // @route POST /api/auth/logout
         // @access public
 
-    logout: async (req, res) => {
+    logout: asyncHandler(async (req, res) => {
         try {
-            const token = req.headers.authorization?.split(' ')[1]; //extracting token from bearer token
+            res.clearCookie('accessToken');
+            res.clearCookie('refreshToken');
 
-            if (!token) {
-                return res.status(400).json({ message: 'No token has been provided' });
-            }
-
-            res.json({ message: 'Logout is successful' });
+            res.status(200).json({ message: 'Logout is successful' });
         } catch (error) {
             console.error('Error during logout:', error);
             res.status(500).json({ message: 'Internal server error' });
         }
-     }
+     })
 }

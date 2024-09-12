@@ -8,9 +8,9 @@ const connectDB = async () => {
         const conn = await mongoose.connect(process.env.MONGO_URI, {
             dbName: process.env.DB_NAME
         });
-        console.log(`MongoDb connected ${conn.connection.host}`);
+        console.log(`MongoDb Atlas connected ${conn.connection.host}`);
     } catch (error) {
-        console.error(`MongoDB connection failed: ${error.message}`); 
+        console.error(`MongoDB Atlas connection failed: ${error.message}`); 
         process.exit(1);
     }
 };

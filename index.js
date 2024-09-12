@@ -4,6 +4,8 @@ const connectDB = require('./helpers/init_mongodb');
 const dotenv = require('dotenv');
 const app = express();
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
+
 // loading the environmental variables
 dotenv.config();
 
@@ -24,6 +26,7 @@ connectDB();
 
 app.use(express.json()); //middleware for parsing JSON data
 app.use(cors(corsOptions)); //Use CORS middleware with specified options
+app.use(cookieParser());
 app.use('/api/auth', authRoutes); //using authRoutes
 
 // sample route to test
