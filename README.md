@@ -1,6 +1,6 @@
 # Event Management System
 
-This is a web application for managing events, including ticketing, attendee management. Built using the 'MERN' stack (MongoDB, Express, React, Node.js), this project aims to provide a comprehensive solution for event organizers.
+This web app helps event organizers manage everything from ticketing to attendee tracking. Built with the MERN stack (MongoDB, Express, React, Node.js), it provides an all-in-one solution for planning and running events efficiently.
 
 ## Features
 
