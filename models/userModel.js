@@ -37,6 +37,12 @@ const userSchema = mongoose.Schema({
         type: String,
         maxLength: [200, 'Bio cannot be more than 200 characters']
     },
+    passwordResetToken: {
+        type: String,
+    },
+    passwordResetTokenExpiration: {
+        type: Date,
+    },
     registeredEvents: [{
         type: mongoose.Schema.Types.ObjectId, //creating a relationship with the event model that the user has signed up or
         ref: 'Event'

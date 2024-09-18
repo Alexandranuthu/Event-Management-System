@@ -5,7 +5,7 @@ const { authSchema, loginSchema } = require('../auth/auth_schema.js');
 const createHttpError = require('http-errors');
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcryptjs');
-
+const passwordService = require('../services/passwordService.js');
 module.exports = {
         // @desc registering a new user
         // @route POST /api/auth/register
@@ -142,6 +142,46 @@ module.exports = {
             console.error('Error during logout:', error);
             res.status(500).json({ message: 'Internal server error' });
         }
-     }),
+    }),
+    
+    // @desc Send user email for resetting their password
+    // @route POST /api/auth/forgot-password
+    // @access public
+    forgotPassword: asyncHandler(async (req, res) => {
+        const { email } = req.body;
+
+        const user = await User.findOne({ email });
+        console.log('DEBUG: User Object:', user);
+
+        
+        if (!user) {
+            return res.status(404).json({ message: 'No account found with this email' });
+        }
+
+        const passwordResetToken = await passwordService.generateResetToken(email);
+        // const passwordResetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${password
+        //     .resetToken(passwordResetToken)}`;
+
+        const userName = user.userName;
+       await passwordService.sendResetEmail(email, passwordResetToken, userName);
+
+        return res.status(200).json({ message: 'Password reset email sent' });
+    }),
+
+    // @desc Allow user to reset password
+    // @route POST /api/auth/reset-password
+    // @access public
+    resetPassword: asyncHandler(async (req, res) => {
+        const { token } = req.params;
+        const { password } = req.body;
+
+        // Attempt to reset the password using the service
+        try {
+            await passwordService.resetPassword(token, password);
+            return res.status(200).json({ message: 'Password reset successful' });
+        } catch (error) {
+            return res.status(400).json({ message: error.message || 'Password reset failed' });
+        }
+    })
      
 }
